@@ -32,8 +32,8 @@ function App() {
     setSelectedDateTimeLocal(localDateTimeString)
   }
 
-  console.log('selectedDateTimeUTC:', selectedDateTimeUTC)
-  console.log('selectedDateTimeLocal:', selectedDateTimeLocal)
+  const ready = () =>
+    selectedDateTimeUTC.length > 0 && selectedDateTimeLocal.length > 0
 
   return (
     <div>
@@ -50,33 +50,41 @@ function App() {
       <input
         type='datetime-local'
         id='datetime-input'
-        value={selectedDateTimeLocal.slice(0, 16)}
+        value={
+          selectedDateTimeLocal.length > 0
+            ? selectedDateTimeLocal.slice(0, 16)
+            : ''
+        }
         onChange={handleDateTimeChange}
       />
 
       <hr />
 
-      <p>
-        Selected Time (Local):{' '}
-        <strong>{format(selectedDateTimeLocal, 'hh:mm:ss a')}</strong>
-      </p>
+      {ready() && (
+        <div>
+          <p>
+            Selected Time (Local):{' '}
+            <strong>{format(selectedDateTimeLocal, 'hh:mm:ss a')}</strong>
+          </p>
 
-      <p>
-        Selected Time (UTC):{' '}
-        <strong>{selectedDateTimeUTC.slice(11, 16)}</strong>
-      </p>
+          <p>
+            Selected Time (UTC):{' '}
+            <strong>{selectedDateTimeUTC.slice(11, 16)}</strong>
+          </p>
 
-      <p>
-        {`Formatted in ${selectedTimezone}: `}
-        <strong>
-          {selectedDateTimeUTC &&
-            formatInTimeZone(
-              selectedDateTimeUTC,
-              selectedTimezone,
-              'hh:mm:ss a',
-            )}
-        </strong>
-      </p>
+          <p>
+            {`Formatted in ${selectedTimezone}: `}
+            <strong>
+              {selectedDateTimeUTC &&
+                formatInTimeZone(
+                  selectedDateTimeUTC,
+                  selectedTimezone,
+                  'hh:mm:ss a',
+                )}
+            </strong>
+          </p>
+        </div>
+      )}
     </div>
   )
 }
