@@ -1,17 +1,18 @@
 import { BaseSyntheticEvent, useState, useEffect } from 'react'
 import './App.css'
-import { formatInTimeZone } from 'date-fns-tz' // Import formatToTimeZone from date-fns-tz
+import { formatInTimeZone, format } from 'date-fns-tz' // Import formatToTimeZone from date-fns-tz
 
 const timezones = [
+  { label: 'Eastern Time (ET)', value: 'America/New_York' },
+  { label: 'Central Time (CT)', value: 'America/Chicago' },
   { label: 'Mountain Time (MT)', value: 'America/Denver' },
   { label: 'Pacific Time (PT)', value: 'America/Los_Angeles' },
-  { label: 'Eastern Time (ET)', value: 'America/New_York' },
-  { label: 'Greenwich Mean Time (GMT)', value: 'Europe/London' },
-  { label: 'Japan Standard Time (JST)', value: 'Asia/Tokyo' },
+  { label: 'Alaska Time (AKT)', value: 'America/Anchorage' },
+  { label: 'Hawaii-Aleutian Time (HST)', value: 'Pacific/Honolulu' },
 ]
 
 function App() {
-  const [selectedTimezone, setSelectedTimezone] = useState(timezones[0].value)
+  const [selectedTimezone, setSelectedTimezone] = useState('America/Denver')
   const [selectedDateTimeUTC, setSelectedDateTimeUTC] = useState('')
   const [selectedDateTimeLocal, setSelectedDateTimeLocal] = useState('')
 
@@ -31,19 +32,8 @@ function App() {
     setSelectedDateTimeLocal(localDateTimeString)
   }
 
-  useEffect(() => {
-    // Set initial values for UTC and local datetime when selectedTimezone changes
-    const localDateTime = selectedDateTimeUTC
-      ? new Date(selectedDateTimeUTC)
-      : new Date()
-    const formattedDateTime = formatInTimeZone(
-      localDateTime,
-      selectedTimezone,
-      'yyyy-MM-ddTHH:mm',
-    )
-    setSelectedDateTimeUTC(selectedDateTimeUTC || localDateTime.toISOString())
-    setSelectedDateTimeLocal(formattedDateTime)
-  }, [selectedTimezone])
+  console.log('selectedDateTimeUTC:', selectedDateTimeUTC)
+  console.log('selectedDateTimeLocal:', selectedDateTimeLocal)
 
   return (
     <div>
@@ -64,18 +54,24 @@ function App() {
         onChange={handleDateTimeChange}
       />
 
-      <p>Selected Date and Time (Local): {selectedDateTimeLocal}</p>
-
-      <p>Selected Date and Time (UTC): {selectedDateTimeUTC}</p>
+      <hr />
 
       <p>
-        Selected Date and Time (Formatted in Timezone):{' '}
-        {selectedDateTimeUTC &&
-          formatInTimeZone(
-            selectedDateTimeUTC,
-            selectedTimezone,
-            'yyyy-MM-dd HH:mm:ss',
-          )}
+        Selected Time (Local):{' '}
+        <strong>{selectedDateTimeLocal.slice(11, 16)}</strong>
+      </p>
+
+      <p>
+        Selected Time (UTC):{' '}
+        <strong>{selectedDateTimeUTC.slice(11, 16)}</strong>
+      </p>
+
+      <p>
+        Selected Time (Formatted in Timezone):{' '}
+        <strong>
+          {selectedDateTimeUTC &&
+            formatInTimeZone(selectedDateTimeUTC, selectedTimezone, 'HH:mm:ss')}
+        </strong>
       </p>
     </div>
   )
