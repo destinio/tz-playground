@@ -58,7 +58,7 @@ function App() {
 
       <p>
         Selected Time (Local):{' '}
-        <strong>{selectedDateTimeLocal.slice(11, 16)}</strong>
+        <strong>{format(selectedDateTimeLocal, 'hh:mm:ss a')}</strong>
       </p>
 
       <p>
@@ -67,10 +67,14 @@ function App() {
       </p>
 
       <p>
-        Selected Time (Formatted in Timezone):{' '}
+        {`Formatted in ${selectedTimezone}: `}
         <strong>
           {selectedDateTimeUTC &&
-            formatInTimeZone(selectedDateTimeUTC, selectedTimezone, 'HH:mm:ss')}
+            formatInTimeZone(
+              selectedDateTimeUTC,
+              selectedTimezone,
+              'hh:mm:ss a',
+            )}
         </strong>
       </p>
     </div>
