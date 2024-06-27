@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, useState, useEffect } from 'react'
+import { BaseSyntheticEvent, useState } from 'react'
 import './App.css'
 import { formatInTimeZone, format } from 'date-fns-tz' // Import formatToTimeZone from date-fns-tz
 
